@@ -16,6 +16,7 @@ describe('NoteService - notify al fijar (Ejercicio 6)', () => {
     const repo = new SqliteNoteRepository(db);
     service = new NoteServiceImpl(repo);
   });
+
   it('llama a notify con la nota creada cuando pinned es true', () => {
     const note = service.createNote({ title: 'Urgente', content: 'Revisar ya', pinned: true });
     expect(notify).toHaveBeenCalledWith(note);
@@ -31,4 +32,4 @@ describe('NoteService - notify al fijar (Ejercicio 6)', () => {
     service.createNote({ title: 'Sin pinned', content: 'Default' });
     expect(notify).not.toHaveBeenCalled();
   });
-})
+});
