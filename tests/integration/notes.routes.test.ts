@@ -3,6 +3,39 @@ import request from 'supertest';
 
 import { makeApp } from '../../src/app';
 
+//  ejercicio 3
+describe('Notes routes - getNote (Ejercicio 3)', () => {
+  let app: ReturnType<typeof makeApp>;
+
+  beforeEach(() => {
+    process.env.NODE_ENV = 'test';
+    app = makeApp(':memory:');
+  });
+
+  it('debe retornar 200 y la nota si el ID es válido', async () => {
+    
+    const postRes = await request(app)
+      .post('/notes')
+      .send({ title: 'Nota API', content: 'Contenido API' });
+    
+    const notaId = postRes.body.id;
+
+    
+    const getRes = await request(app).get(`/notes/${notaId}`);
+    
+   
+    expect(getRes.status).toBe(200);
+    expect(getRes.body.id).toBe(notaId);
+    expect(getRes.body.title).toBe('Nota API');
+  });
+
+  it('debe retornar 404 si la nota no existe', async () => {
+    const getRes = await request(app).get('/notes/999999');
+    expect(getRes.status).toBe(404);
+  });
+});
+
+//ejercicio 4
 describe('Notes routes - updateNote (Ejercicio 4)', () => {
   let app: ReturnType<typeof makeApp>;
 
@@ -34,3 +67,5 @@ describe('Notes routes - updateNote (Ejercicio 4)', () => {
       .expect(404);
   });
 });
+
+
