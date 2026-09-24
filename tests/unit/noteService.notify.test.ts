@@ -27,5 +27,8 @@ describe('NoteService - notify al fijar (Ejercicio 6)', () => {
     expect(notify).not.toHaveBeenCalled();
   });
 
-  
+  it('NO llama a notify cuando pinned no se indica', () => {
+    service.createNote({ title: 'Sin pinned', content: 'Default' });
+    expect(notify).not.toHaveBeenCalled();
+  });
 })
