@@ -69,3 +69,34 @@ describe('Notes routes - updateNote (Ejercicio 4)', () => {
 });
 
 
+//ejercicio 5
+describe('Notes routes - deleteNote (Ejercicio 5)', () => {
+  let app: ReturnType<typeof makeApp>;
+
+  beforeEach(() => {
+    process.env.NODE_ENV = 'test';
+    app = makeApp(':memory:');
+  });
+
+  it('elimina una nota y devuelve 204', async () => {
+    const seed = await request(app)
+      .post('/__test__/seed')
+      .expect(201);
+
+    const noteId = seed.body.created[0].id;
+
+    await request(app)
+      .delete(`/notes/${noteId}`)
+      .expect(204);
+
+    await request(app)
+      .get(`/notes/${noteId}`)
+      .expect(404);
+  });
+
+  it('devuelve 404 si la nota no existe', async () => {
+    await request(app)
+      .delete('/notes/999')
+      .expect(404);
+  });
+});
